@@ -1,13 +1,34 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const PORT = 3000;
-
-// Ruta básica
-app.get('/', (req, res) => {
-  res.send('¡Hola, mundo desde Express!');
+const cors = require("cors");
+const port = require("./infraestructure/config/config").port;
+app.use(
+  cors({
+    origin: "http://localhost:5713",
+    credentials: true,
+  })
+);
+app.get("/", (_, res) => {
+  res.send(`<div>
+      <h1>Hello World</h1>
+      <p>This is a simple server</p>
+      <table>
+      las tablas son las tablas 
+      <tr>
+        <td>user</td>
+        <td>conversation</td>
+        <td>message</td>
+        <td>FriendRequest</td>
+      </tr>     
+      <tr>
+        <td>uid</td>
+        <td>uid</td>
+        <td>uid</td>
+        <td>uid</td>
+      </tr> 
+      </table>
+    </div>`);
 });
-
-// Escuchar en el puerto definido
-app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on port http://localhost:${port}`);
 });
