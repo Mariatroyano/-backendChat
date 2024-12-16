@@ -1,6 +1,6 @@
 const { userModel } = "";
 const bcrypt = require('bcrypt')
-export class userRespository {
+class userRespository {
   async create({ name, email, password }) {
     try {
       const uid = crypto.randomUUID();
@@ -13,3 +13,5 @@ export class userRespository {
   }
   async logear(data) {}
 }
+
+module.exports = userRespository

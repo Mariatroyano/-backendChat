@@ -1,8 +1,11 @@
 const express = require("express");
-const { userRespository: repository } = require("../out/userRespository");
+const repository = require("../out/userRespository");
 const userRespository = new repository();
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send("<h1>Hello world user</h1>");
+});
 router.post("/", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -14,3 +17,5 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error });
   }
 });
+
+module.exports = router;
