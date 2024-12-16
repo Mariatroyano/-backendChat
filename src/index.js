@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = require("./infraestructure/config/config").port;
+const userRouter = require('./modules/user/app/in/userRoutes')
 app.use(
   cors({
     origin: "http://localhost:5713",
@@ -29,6 +30,7 @@ app.get("/", (_, res) => {
       </table>
     </div>`);
 });
+app.use('/user', userRouter)
 app.listen(port, () => {
   console.log(`Server is running on port http://localhost:${port}`);
 });
