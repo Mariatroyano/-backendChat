@@ -1,21 +1,14 @@
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  class Message extends Model {
+  class FriendRequest extends Model {
     static associate(models) {
-      this.belongsTo(models.Conversation, {
-        foreignKey: "uidConversation",
-        as: "conversation",
-      });
-
-      this.belongsTo(models.User, {
-        foreignKey: "uidSend",
-        as: "sender",
-      });
+      this.belongsTo(models.User, { foreignKey: "userSend", as: "sender" });
+      this.belongsTo(models.User, { foreignKey: "userReject", as: "receiver" });
     }
   }
 
-  Message.init(
+  FriendRequest.init(
     {
       uid: {
         type: DataTypes.UUID,
@@ -27,18 +20,14 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      content: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
     },
     {
       sequelize,
-      modelName: "Message",
-      tableName: "messages",
+      modelName: "FriendRequest",
+      tableName: "friend_requests",
       timestamps: true,
     }
   );
 
-  return Message;
+  return FriendRequest;
 };
