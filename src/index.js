@@ -52,6 +52,12 @@ io.on("connection", (socket) => {
   socket.on("refreshNotifications", (userUid) => {
     socket.broadcast.emit("refreshNotifications2", userUid);
   });
+  socket.on("refreshMessages", (userUid) => {
+    console.log(
+      "refreshMessages jjjdjjdjdjdjdjdjjdjdjdjjdjdjdjdjddj" + userUid
+    );
+    socket.broadcast.emit("refreshMessages2", userUid);
+  });
 });
 // Iniciar servidor
 server.listen(port, () => {
