@@ -24,6 +24,7 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
     },
+
     {
       sequelize,
       modelName: "Conversation",

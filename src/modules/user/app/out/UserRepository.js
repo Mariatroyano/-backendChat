@@ -21,7 +21,6 @@ class UserRepository {
   }
   async login(email, password, time) {
     const user = await User.findOne({ where: { email } });
-    // console.log(user);
     if (!user) {
       throw new Error("the user does not exist");
     }
@@ -43,6 +42,36 @@ class UserRepository {
     return {
       name: name ? true : false,
       email: email ? true : false,
+    };
+  }
+  async getFriends(uid) {
+    const user = await User.findOne({ where: { uid } });
+    if (!user) {
+      throw new Error("the user does not exist");
+    }
+    const friends = user.friends;
+    if (!friends) return [];
+    const allFriends = await Promise.all(
+      friends?.map(async (friends) => {
+        const friend = await User.findOne({ where: { uid: friends.friend } });
+        return {
+          name: friend.name,
+          email: friend.email,
+          uid: friend.uid,
+        };
+      })
+    );
+    return allFriends;
+  }
+  async getByUid(uid) {
+    const user = await User.findOne({ where: { uid } });
+    if (!user) {
+      throw new Error("the user does not exist");
+    }
+    return {
+      name: user.name,
+      email: user.email,
+      uid: user.uid,
     };
   }
 }

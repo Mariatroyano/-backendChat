@@ -1,0 +1,46 @@
+const {
+  FriendsRequest,
+  User,
+} = require("../../../../infraestructure/config/dataBase");
+
+class NotificationRepository {
+  async getNotifications(uid) {
+    try {
+      // Encuentra todas las solicitudes de amistad rechazadas por el usuario
+      const notifications = await FriendsRequest.findAll({
+        where: { userRejects: uid },
+      });
+
+      // Usa Promise.all para procesar todas las notificaciones y esperar las promesas
+      const notificationsWithUser = await Promise.all(
+        notifications.map(async (notification) => {
+          // Encuentra los datos del usuario que envió la solicitud
+          const user = await User.findOne({
+            where: { uid: notification.userSend },
+          });
+
+          // Retorna la notificación con los datos del usuario adjuntos
+          return {
+            ...notification.dataValues,
+            type: "Solicitud de amistad",
+            user: user
+              ? {
+                  name: user.dataValues.name,
+                  email: user.dataValues.email,
+                  uid: user.dataValues.uid,
+                }
+              : null, // Maneja el caso en que no se encuentre el usuario
+          };
+        })
+      );
+
+      // console.log("notificationsWithUser", notificationsWithUser); // Ahora imprime los datos resueltos
+      return notificationsWithUser;
+    } catch (error) {
+      console.error("Error al obtener las notificaciones:", error);
+      throw error;
+    }
+  }
+}
+
+module.exports = NotificationRepository;
